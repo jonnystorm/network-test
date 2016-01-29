@@ -4,7 +4,8 @@
 # as published by Sam Hocevar. See the COPYING.WTFPL file for more details.
 
 defmodule PacketTrace do
-  alias PacketTrace.{Phase, Result}
+  alias PacketTrace.Phase
+  alias PacketTrace.Result
 
   defstruct phases: [], result: nil
 
