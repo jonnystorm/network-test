@@ -10,52 +10,36 @@ defmodule NetworkTest.PacketTracer.Shell do
     Application.get_env(:network_test, NetworkTest.PacketTracer.Shell)[:path]
   end
 
-  def packet_tracer(
-    firewall_ip,
-    input_if,
-    :icmp,
-    source,
-    icmp_type,
-    icmp_code,
-    destination
-  ) do
-
+  def packet_tracer(firewall_ip, input_if, flow = %Flow.ICMP{}) do
     {output, _} =
       System.cmd(
         packet_tracer_path,
         [ firewall_ip,
           input_if,
-          "icmp",
-          source,
-          to_string(icmp_type),
-          to_string(icmp_code),
-          destination
+          flow.keyword,
+          flow.source,
+          to_string(flow.type),
+          to_string(flow.code),
+          flow.destination
         ],
         stderr_to_stdout: true
       )
 
     output
   end
-  def packet_tracer(
-    firewall_ip,
-    input_if,
-    protocol,
-    source,
-    source_port,
-    destination,
-    destination_port
-  ) do
+  def packet_tracer(firewall_ip, input_if, flow = %{keyword: protocol})
+      when protocol in ["tcp", "udp"] do
 
     {output, _} =
       System.cmd(
         packet_tracer_path,
         [ firewall_ip,
           input_if,
-          to_string(protocol),
-          source,
-          to_string(source_port),
-          destination,
-          to_string(destination_port)
+          protocol,
+          flow.source,
+          to_string(flow.source_port),
+          flow.destination,
+          to_string(flow.destination_port)
         ],
         stderr_to_stdout: true
       )

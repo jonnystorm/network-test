@@ -4,15 +4,6 @@
 # as published by Sam Hocevar. See the COPYING.WTFPL file for more details.
 
 defmodule NetworkTest do
-  defp get_packet_tracer do
-    Application.get_env :network_test, :packet_tracer
-  end
-
-  defp packet_trace(phases, result = %PacketTrace.Result{}) when is_list phases do
-    %PacketTrace{phases: phases, result: result}
-  end
-
-
   defp _parse_phase(
     output = ["Result:" | _tail],
     { phase = %PacketTrace.Phase{
@@ -198,6 +189,11 @@ defmodule NetworkTest do
     _parse_phase tail, {new_phase, phases}
   end
 
+
+  defp packet_trace(phases, result = %PacketTrace.Result{}) when is_list phases do
+    %PacketTrace{phases: phases, result: result}
+  end
+
   def parse_packet_tracer_output(output) when is_binary output do
     [result | phases] =
       output
@@ -207,55 +203,15 @@ defmodule NetworkTest do
     packet_trace phases, result
   end
 
-
-  def packet_tracer(
-    firewall_ip,
-    input_interface,
-    :icmp,
-    source,
-    icmp_type,
-    icmp_code,
-    destination
-  ) when is_binary(firewall_ip)
-      and is_binary(input_interface)
-      and is_binary(source)
-      and is_binary(destination)
-      and icmp_type in 0..255 and icmp_code in 0..255 do
-
-    get_packet_tracer.packet_tracer(
-      firewall_ip,
-      input_interface,
-      :icmp,
-      source,
-      icmp_type,
-      icmp_code,
-      destination
-    ) |> parse_packet_tracer_output
+  defp get_packet_tracer do
+    Application.get_env :network_test, :packet_tracer
   end
 
-  def packet_tracer(
-    firewall_ip,
-    input_interface,
-    protocol,
-    source,
-    source_port,
-    destination,
-    destination_port
-  ) when is_binary(firewall_ip)
-      and is_binary(input_interface)
-      and protocol in [:tcp, :udp]
-      and is_binary(source)
-      and is_binary(destination)
-      and source_port in 1..65535 and destination_port in 1..65535 do
+  @spec packet_tracer(String.t, String.t, Flow.t) :: PacketTrace.t
+  def packet_tracer(firewall_ip, input_interface, flow)
+      when is_binary(firewall_ip) and is_binary(input_interface) do
 
-    get_packet_tracer.packet_tracer(
-      firewall_ip,
-      input_interface,
-      to_string(protocol),
-      source,
-      source_port,
-      destination,
-      destination_port
-    ) |> parse_packet_tracer_output
+    get_packet_tracer.packet_tracer(firewall_ip, input_interface, flow)
+      |> parse_packet_tracer_output
   end
 end

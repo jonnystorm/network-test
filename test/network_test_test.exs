@@ -49,7 +49,7 @@ Untranslate 192.0.2.100/80 to 192.0.2.100/80\n\n"
       drop_reason: "(acl-drop) Flow is denied by configured rule"
     }
 
-    assert NetworkTest.packet_tracer("", "outside", :icmp, "", 0, 0, "") == 
+    assert NetworkTest.packet_tracer("", "outside", %Flow.ICMP{}) == 
       %PacketTrace{phases: [phase1, phase2, phase3], result: result}
   end
 end

@@ -6,7 +6,7 @@
 defmodule NetworkTest.PacketTracer.Dummy do
   @behaviour NetworkTest.PacketTracer
 
-  def packet_tracer(_, input_interface, _, _, _, _, _) do
+  def packet_tracer(_, input_interface, _) do
     "\r
 Phase: 1\r
 Type: ROUTE-LOOKUP\r
