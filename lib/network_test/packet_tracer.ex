@@ -4,11 +4,5 @@
 # as published by Sam Hocevar. See the COPYING.WTFPL file for more details.
 
 defmodule NetworkTest.PacketTracer do
-  @callback packet_tracer(
-    String.t, String.t, :icmp, String.t, 0..255, 0..255, String.t
-  ) :: String.t
-
-  @callback packet_tracer(
-    String.t, String.t, :tcp | :udp, String.t, 1..65535, String.t, 1..65535
-  ) :: String.t
+  @callback packet_tracer(String.t, String.t, Flow.t) :: String.t
 end
