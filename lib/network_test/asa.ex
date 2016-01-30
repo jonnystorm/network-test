@@ -14,7 +14,7 @@ defmodule NetworkTest.ASA do
     destination
   ) do
     quote do
-      assert is_allowed(
+      trace = NetworkTest.packet_tracer(
         @device_under_test,
         unquote(input_interface),
         :icmp,
@@ -23,6 +23,8 @@ defmodule NetworkTest.ASA do
         unquote(icmp_code),
         unquote(destination)
       )
+
+      assert trace.result.action == "allow", trace.result.drop_reason
     end
   end
   defmacro assert_allow(
@@ -34,7 +36,7 @@ defmodule NetworkTest.ASA do
     destination_port
   ) do
     quote do
-      assert is_allowed(
+      trace = NetworkTest.packet_tracer(
         @device_under_test,
         unquote(input_interface),
         unquote(protocol),
@@ -43,6 +45,8 @@ defmodule NetworkTest.ASA do
         unquote(destination),
         unquote(destination_port)
       )
+
+      assert trace.result.action == "allow", trace.result.drop_reason
     end
   end
 
@@ -55,7 +59,7 @@ defmodule NetworkTest.ASA do
     destination
   ) do
     quote do
-      assert not is_allowed(
+      trace = NetworkTest.packet_tracer(
         @device_under_test,
         unquote(input_interface),
         :icmp,
@@ -64,6 +68,8 @@ defmodule NetworkTest.ASA do
         unquote(icmp_code),
         unquote(destination)
       )
+
+      refute trace.result.action == "allow"
     end
   end
   defmacro assert_deny(
@@ -75,7 +81,7 @@ defmodule NetworkTest.ASA do
     destination_port
   ) do
     quote do
-      assert not is_allowed(
+      trace = NetworkTest.packet_tracer(
         @device_under_test,
         unquote(input_interface),
         unquote(protocol),
@@ -84,45 +90,8 @@ defmodule NetworkTest.ASA do
         unquote(destination),
         unquote(destination_port)
       )
-    end
-  end
 
-  def is_allowed(
-    firewall_ip,
-    input_interface,
-    :icmp,
-    source,
-    icmp_type,
-    icmp_code,
-    destination
-  ) do
-    NetworkTest.packet_tracer(
-      firewall_ip,
-      input_interface,
-      :icmp,
-      source,
-      icmp_type,
-      icmp_code,
-      destination
-    ).result.action == "allow"
-  end
-  def is_allowed(
-    firewall_ip,
-    input_interface,
-    protocol,
-    source,
-    source_port,
-    destination,
-    destination_port
-  ) when protocol in [:tcp, :udp] do
-    NetworkTest.packet_tracer(
-      firewall_ip,
-      input_interface,
-      protocol,
-      source,
-      source_port,
-      destination,
-      destination_port
-    ).result.action == "allow"
+      refute trace.result.action == "allow"
+    end
   end
 end
