@@ -24,7 +24,7 @@ defmodule NetworkTest.ASA do
         unquote(destination)
       )
 
-      assert trace.result.action == "allow", trace.result.drop_reason
+      assert trace.result.action == "allow", (trace.result.drop_reason || "")
     end
   end
   defmacro assert_allow(
@@ -46,7 +46,7 @@ defmodule NetworkTest.ASA do
         unquote(destination_port)
       )
 
-      assert trace.result.action == "allow", trace.result.drop_reason
+      assert trace.result.action == "allow", (trace.result.drop_reason || "")
     end
   end
 
