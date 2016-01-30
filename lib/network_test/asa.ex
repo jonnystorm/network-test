@@ -5,13 +5,13 @@ defmodule NetworkTest.ASA do
     end
   end
 
-  defmacro assert_allow(
-    input_interface,
+  defmacro allow(
     :icmp,
     source,
-    icmp_type,
-    icmp_code,
-    destination
+    type: icmp_type,
+    code: icmp_code,
+    access_to: destination,
+    from: input_interface
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
@@ -27,13 +27,13 @@ defmodule NetworkTest.ASA do
       assert trace.result.action == "allow", (trace.result.drop_reason || "")
     end
   end
-  defmacro assert_allow(
-    input_interface,
+  defmacro allow(
     protocol,
     source,
-    source_port,
-    destination,
-    destination_port
+    port: source_port,
+    access_to: destination,
+    port: destination_port,
+    from: input_interface
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
@@ -50,13 +50,13 @@ defmodule NetworkTest.ASA do
     end
   end
 
-  defmacro assert_deny(
-    input_interface,
+  defmacro deny(
     :icmp,
     source,
-    icmp_type,
-    icmp_code,
-    destination
+    type: icmp_type,
+    code: icmp_code,
+    access_to: destination,
+    from: input_interface
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
@@ -72,13 +72,13 @@ defmodule NetworkTest.ASA do
       refute trace.result.action == "allow"
     end
   end
-  defmacro assert_deny(
-    input_interface,
+  defmacro deny(
     protocol,
     source,
-    source_port,
-    destination,
-    destination_port
+    port: source_port,
+    access_to: destination,
+    port: destination_port,
+    from: input_interface
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
