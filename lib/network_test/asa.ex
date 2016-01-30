@@ -6,12 +6,12 @@ defmodule NetworkTest.ASA do
   end
 
   defmacro allow(
+    input_interface,
     :icmp,
-    source,
     type: icmp_type,
     code: icmp_code,
-    access_to: destination,
-    from: input_interface
+    from: source,
+    to: destination
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
@@ -28,12 +28,12 @@ defmodule NetworkTest.ASA do
     end
   end
   defmacro allow(
+    input_interface,
     protocol,
-    source,
+    from: source,
     port: source_port,
-    access_to: destination,
-    port: destination_port,
-    from: input_interface
+    to: destination,
+    port: destination_port
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
@@ -51,12 +51,12 @@ defmodule NetworkTest.ASA do
   end
 
   defmacro deny(
+    input_interface,
     :icmp,
-    source,
     type: icmp_type,
     code: icmp_code,
-    access_to: destination,
-    from: input_interface
+    from: source,
+    to: destination
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
@@ -73,12 +73,12 @@ defmodule NetworkTest.ASA do
     end
   end
   defmacro deny(
+    input_interface,
     protocol,
-    source,
+    from: source,
     port: source_port,
-    access_to: destination,
-    port: destination_port,
-    from: input_interface
+    to: destination,
+    port: destination_port
   ) do
     quote do
       trace = NetworkTest.packet_tracer(
