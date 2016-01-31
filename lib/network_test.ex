@@ -194,7 +194,7 @@ defmodule NetworkTest do
     %PacketTrace{phases: phases, result: result}
   end
 
-  def parse_packet_tracer_output(output) when is_binary output do
+  defp parse_packet_tracer_output(output) when is_binary output do
     [result | phases] =
       output
         |> String.split("\r\n")

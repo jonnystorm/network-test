@@ -103,3 +103,21 @@ defmodule Flow do
     }
   end
 end
+
+defimpl String.Chars, for: Flow.ICMP do
+  def to_string(f) do
+    "#{f.keyword} #{f.source} #{f.type} #{f.code} #{f.destination}"
+  end
+end
+
+defimpl String.Chars, for: Flow.TCP do
+  def to_string(f) do
+    "#{f.keyword} #{f.source} #{f.source_port} #{f.destination} #{f.destination_port}"
+  end
+end
+
+defimpl String.Chars, for: Flow.UDP do
+  def to_string(f) do
+    "#{f.keyword} #{f.source} #{f.source_port} #{f.destination} #{f.destination_port}"
+  end
+end

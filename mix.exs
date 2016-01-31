@@ -15,6 +15,8 @@ defmodule NetworkTest.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:ssh_pty_ex, git: "https://github.com/jonnystorm/ssh-pty-elixir.git"}
+    ]
   end
 end

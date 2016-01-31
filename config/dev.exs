@@ -6,5 +6,5 @@
 use Mix.Config
 
 config :network_test,
-  packet_tracer: NetworkTest.PacketTracer.Shell
+  packet_tracer: NetworkTest.PacketTracer.SSH
 
