@@ -30,7 +30,7 @@ defmodule NetworkTest.PacketTracer.SSH do
     cid = SSHPTY.get_shell conn
 
     _ = SSHPTY.send "term page 0", conn, cid
-    {^trace_cmd, output} = SSHPTY.send trace_cmd, conn, cid
+    [{^trace_cmd, output}] = SSHPTY.send trace_cmd, conn, cid
     _ = SSHPTY.send "exit", conn, cid
 
     output
