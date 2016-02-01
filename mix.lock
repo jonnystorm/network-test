@@ -1,1 +1,1 @@
-%{"ssh_pty_ex": {:git, "https://github.com/jonnystorm/ssh-pty-elixir.git", "25d86453964b1cea17656baa4a4a7ecd0632f53e", []}}
+%{"ssh_pty_ex": {:git, "https://github.com/jonnystorm/ssh-pty-elixir.git", "4aed8ec375496124ce618a6388772976cdb9ea22", []}}
