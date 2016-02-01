@@ -41,4 +41,5 @@ defmodule NetworkTest.PacketTracer.SSH do
     after
       SSHPTY.disconnect conn
     end
+  end
 end
