@@ -188,6 +188,9 @@ defmodule NetworkTest do
 
     _parse_phase tail, {new_phase, phases}
   end
+  defp _parse_packet_tracer_output([<<_ :: binary>> | tail], acc) do
+    _parse_packet_tracer_output tail, acc
+  end
 
 
   defp packet_trace(phases, result = %PacketTrace.Result{}) when is_list phases do
