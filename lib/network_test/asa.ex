@@ -97,27 +97,26 @@ defmodule NetworkTest.ASA do
 
   defp assemble_fail_message(
     firewall_ip,
-    input_interface,
+    input_if,
     outcome,
     protocol,
     details,
     reason
   ) do
-    "On interface '#{input_interface}', #{firewall_ip} #{outcome} "
-      <> "#{protocol} #{details}\n"
+    "#{firewall_ip} #{outcome} #{protocol} on interface #{input_if} #{details}:\n"
       <> "  #{reason}\n"
   end
 
   defp fail_message(
     firewall_ip,
-    input_interface,
+    input_if,
     outcome,
     flow = %Flow.ICMP{},
     reason
   ) do
     assemble_fail_message(
       firewall_ip,
-      input_interface,
+      input_if,
       outcome,
       "ICMP type #{flow.type}, code #{flow.code}",
       "from #{flow.source} to #{flow.destination}",
@@ -127,7 +126,7 @@ defmodule NetworkTest.ASA do
 
   defp fail_message(
     firewall_ip,
-    input_interface,
+    input_if,
     outcome,
     flow = %{keyword: protocol},
     reason
@@ -137,7 +136,7 @@ defmodule NetworkTest.ASA do
 
     assemble_fail_message(
       firewall_ip,
-      input_interface,
+      input_if,
       outcome,
       String.upcase(protocol),
       details,
