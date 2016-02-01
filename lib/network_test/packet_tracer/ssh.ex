@@ -27,12 +27,18 @@ defmodule NetworkTest.PacketTracer.SSH do
     credential = [username: get_user, password: get_password]
 
     conn = SSHPTY.connect URI.parse("ssh://#{firewall_ip}"), credential
-    cid = SSHPTY.get_shell conn
 
-    _ = SSHPTY.send "term page 0", conn, cid
-    [{^trace_cmd, output}] = SSHPTY.send trace_cmd, conn, cid
-    _ = SSHPTY.send "exit", conn, cid
+    try do
+      cid = SSHPTY.get_shell conn
 
-    output
-  end
+      _ = SSHPTY.send "term page 0", conn, cid
+      [{^trace_cmd, output}] = SSHPTY.send trace_cmd, conn, cid
+      _ = SSHPTY.send "exit", conn, cid
+
+      output = Regex.replace ~r/^.*\r\n/, output, ""
+      Regex.replace ~r/\r\n.*$/, output, ""
+
+    after
+      SSHPTY.disconnect conn
+    end
 end
