@@ -11,7 +11,7 @@ defmodule NetworkTest.Mixfile do
   end
 
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :ssh_pty_ex]]
   end
 
   defp deps do

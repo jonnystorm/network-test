@@ -7,7 +7,7 @@ defmodule NetworkTest.PacketTracer.SSH do
   @behaviour NetworkTest.PacketTracer
 
   defp get_environment do
-    Application.get_env :network_test, NetworkTest.PacketTracer.SSH
+    Application.get_env :network_test, NetworkTest.PacketTracer.SSH, []
   end
 
   defp get_user do
@@ -19,7 +19,7 @@ defmodule NetworkTest.PacketTracer.SSH do
   end
 
   defp get_password do
-    File.read! get_password_path
+    String.strip File.read!(get_password_path)
   end
 
   def packet_tracer(firewall_ip, input_if, flow) do
