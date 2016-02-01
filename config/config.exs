@@ -8,6 +8,10 @@ use Mix.Config
 import_config "#{Mix.env}.exs"
 
 
+config :network_test, NetworkTest.PacketTracer.Shell,
+  path: "/home/jstorm/dev/working/shell/network-helpers/packet-tracer.sh"
+
+
 config :network_test, NetworkTest.PacketTracer.SSH,
   user: "robot",
   password_path: "/home/jstorm/.ssh/robot_pass"
